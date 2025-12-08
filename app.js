@@ -363,21 +363,44 @@ function initProjectLinks() {
 
 // Utility function for smooth animations
 function animateValue(element, start, end, duration, suffix = "") {
+
   let startTimestamp = null;
+  const isDecimal = end % 1 !== 0;
+
   const step = (timestamp) => {
     if (!startTimestamp) startTimestamp = timestamp;
     const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-    const value = progress * (end - start) + start;
-    element.textContent = isDecimal
-      ? value.toFixed(1) + suffix
-      : Math.floor(value) + suffix;
-    
+    let value = progress * (end - start) + start;
+
+    if (isDecimal) {
+      value = value.toFixed(1);
+    } else {
+      value = Math.floor(value);
+    }
+
+    element.textContent = value + suffix;
+
     if (progress < 1) {
       window.requestAnimationFrame(step);
     }
   };
   window.requestAnimationFrame(step);
-}
+}  
+//   let startTimestamp = null;
+//   const step = (timestamp) => {
+//     if (!startTimestamp) startTimestamp = timestamp;
+//     const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+//     const value = progress * (end - start) + start;
+//     element.textContent = isDecimal
+//       ? value.toFixed(1) + suffix
+//       : Math.floor(value) + suffix;
+    
+//     if (progress < 1) {
+//       window.requestAnimationFrame(step);
+//     }
+//   };
+//   window.requestAnimationFrame(step);
+// }
 
 // Initialize counter animations when stats come into view
 function initCounterAnimations() {
